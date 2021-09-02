@@ -21,13 +21,32 @@ Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdtree'
 Bundle 'klen/python-mode'
-Bundle 'hdima/python-syntax'
+" Bundle 'hdima/python-syntax'
 Bundle 'vim-scripts/Conque-Shell'
 Bundle 'FuzzyFinder'
 Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'terryma/vim-multiple-cursors'
-Bundle 'heavenshell/vim-pydocstring'
+Bundle 'wincent/command-t'
+Bundle 'fatih/vim-go'
+Plugin 'jreybert/vimagit'
+Plugin 'xolox/vim-notes'
+Plugin 'xolox/vim-misc'
 
+Bundle 'altercation/vim-colors-solarized'
+
+" Funny stuff
+Plugin 'koron/nyancat-vim'
+
+" Better autocomplete
+"Plugin 'zxqfl/tabnine-vim'
+
+Plugin 'rainglow/vim'
+
+Bundle 'dkprice/vim-easygrep'
+
+" Markdown syntax support
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -53,7 +72,7 @@ set tags+=~/.vim/systags
 
 set t_Co=256
 syntax on
-set foldmethod=syntax
+"set foldmethod=syntax
 
 set completeopt=menuone,preview
 
@@ -93,21 +112,21 @@ autocmd BufReadPost *
 "  endif
 "endif
 
-if has("gui_running")
-  " GUI is running or is about to start.
-  " Maximize gvim window (for an alternative on Windows, see simalt below).
-  set lines=999 columns=999
-  " set guifont=Monospace\ 10
-  set guifont=Source\ Code\ Pro\ For\ Powerline\ Medium\ 10
-else
-  " This is console Vim.
-  if exists("+lines")
-    set lines=50
-  endif
-  if exists("+columns")
-    set columns=100
-  endif
-endif
+"if has("gui_running")
+"  " GUI is running or is about to start.
+"  " Maximize gvim window (for an alternative on Windows, see simalt below).
+"  set lines=999 columns=999
+"  " set guifont=Monospace\ 10
+"  set guifont=Source\ Code\ Pro\ For\ Powerline\ Medium\ 10
+"else
+"  " This is console Vim.
+"  if exists("+lines")
+"    set lines=54
+"  endif
+"  if exists("+columns")
+"    set columns=205
+"  endif
+"endif
 
 " Powerline setup
 "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
@@ -117,7 +136,7 @@ map <F2> :NERDTreeToggle<CR>
 
 " Python-mode
 " Activate rope
-" Keys 
+" Keys:
 " K             Show python docs
 " <Ctrl-Space>  Rope autocomplete
 " <Ctrl-c>g     Rope goto definition
@@ -128,17 +147,18 @@ map <F2> :NERDTreeToggle<CR>
 " ]]            Jump on next class or function (normal, visual, operator modes)
 " [M            Jump on previous class or method (normal, visual, operator modes)
 " ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1
+"let g:pymode_rope = 1
+let g:pymode_rope = 0
 
 " Documentation
 let g:pymode_doc = 1
-" let g:pymode_doc_key = 'K'
+let g:pymode_doc_key = 'K'
 
 "Linting
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
 " Auto check on save
-let g:pymode_lint_write = 1
+let g:pymode_lint_write = 0
 
 " Support virtualenv
 let g:pymode_virtualenv = 1
@@ -156,19 +176,25 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_options_colorcolumn = 0
 
 let g:pymode_doc = 1
-" let g:pymode_doc_bind = 'K'
+let g:pymode_doc_bind = 'K'
 " Don't autofold code
 let g:pymode_folding = 0
 
-let g:pymode_indent = 1
+let g:pymode_indent = 0
 let g:pymode_rope_show_doc_bind = '<Ctrl-c>d'
 
 let NERDTreeShowHidden=1
 let python_highlight_all = 1
 
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
 "syntax enable
 set background=dark
 colorscheme solarized
+"colorscheme legacy
 
 "tag-list
 let Tlist_Ctags_Cmd = '/usr/bin/ctags'
@@ -197,8 +223,8 @@ let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 
 
 " to tab by number
- noremap <M>1 1gt<CR>
- noremap <M>2 2gt<CR>
+ noremap <M>1 1gt
+ noremap <M>2 2gt
  noremap <M>3 3gt
  noremap <M>4 4gt
  noremap <M>5 5gt
@@ -208,17 +234,10 @@ let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
  noremap <M>9 9gt
  noremap <M>0 :tablast<cr>
 
-"tab movement
-map <C-a> <Esc>:tabprev<CR>
-map <C-x> <Esc>:tabnext<CR>
+
+map <C-Up> <Esc>:tabprev<CR>
+map <C-Down> <Esc>:tabnext<CR>
 map <C-n> <Esc>:tabnew
-
-"split movement
-"nnoremap <C-J> <C-W><C-J>
-"nnoremap <C-K> <C-W><C-K>
-"nnoremap <C-L> <C-W><C-L>
-"nnoremap <C-H> <C-W><C-H>
-
 
 let g:pymode_rope_lookup_project = 0
 
@@ -226,5 +245,38 @@ let g:pymode_rope_lookup_project = 0
 nmap <F8> :TagbarToggle<CR>
 
 
-"Pydoc key mapping
-nmap <silent> <C-_> <Plug>(pydocstring)
+"for ctrlp
+let g:ctrlp_max_files=0
+
+let g:ctrlp_working_path_mode = 'ra'
+"When invoked, unless a starting directory is specified, CtrlP will set its local working directory according to this variable'c' - the directory of the current file. 'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr _darcs 'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the current file. 0 or '' (empty string) - disable this feature.
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+"set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+let g:ctrlp_max_height = 20
+
+let g:ctrlp_max_files = 500000
+
+let g:ctrlp_custom_ignore = {
+  \ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|installer\|node_modules\|build\|main-NH4\|tmp$',
+  \ 'file': '\v\.(exe|so|dll|pyc|css|ttf|jpeg|gif|mustache|png|md|wf)$' }
+
+let g:EasyGrepRecursive=1
+
+"let g:GrepProgram=4
+let g:EasyGrepCommand='rg'
+
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+" " when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" " On pressing tab, insert 4 spaces
+set expandtab
+
+" Make backspace work
+set bs=2
+
+"" set python virtualenv path for pymode
+let g:pymode_virtualenv_path = '/home/anirudh/.virtualenvs/calm/'
